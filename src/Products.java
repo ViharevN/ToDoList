@@ -1,43 +1,64 @@
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 public class Products {
-    private String productName;
+    private String nameProducts;
+    private boolean checked;
     private int cost;
     private int weight;
 
-    private Set<Products> products;
+    private boolean isBuy;
 
-
-
-    public Products(String productName, int cost, int weight) {
-        if (productName != null && !productName.isEmpty()) {
-            this.productName = productName;
-        } else {
-            this.productName = "Заполните краточку товара полностью";
-        }
+    public Products(String nameProducts, int cost, int weight) {
+        this.nameProducts = nameProducts;
         this.cost = cost;
         this.weight = weight;
+        if (nameProducts == null || nameProducts.isEmpty() || nameProducts.isBlank()) {
+            throw new RuntimeException("Заполните карточку товара!");
+        }
+        if (cost <= 0 || weight <= 0) {
+            throw new RuntimeException("Заполните карточку товара правильно");
+        }
+    }
+
+    public boolean isBuy() {
+        return isBuy;
+    }
+
+    public void buy() {
+        isBuy = true;
     }
 
 
+    public void setChecked() {
+        this.checked = true;
+    }
 
-    public String getProductName() {
-        return productName;
+    public boolean isChecked() {
+        return checked;
+    }
+
+    public String getNameProducts() {
+        return nameProducts;
+    }
+
+    public void setNameProducts(String nameProducts) {
+        this.nameProducts = nameProducts;
     }
 
     public int getCost() {
         return cost;
     }
 
+    public void setCost(int cost) {
+        this.cost = cost;
+    }
+
     public int getWeight() {
         return weight;
     }
 
-    public void removeProduct(Object o) {
-        if (this == o) {
-            Products products = (Products) o;
-        }
+    public void setWeight(int weight) {
+        this.weight = weight;
     }
 
     @Override
@@ -45,18 +66,18 @@ public class Products {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Products products = (Products) o;
-        throw new RuntimeException("Попытка добавить имеющийся продукт");
+        return Objects.equals(nameProducts, products.nameProducts);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(productName, cost);
+        return Objects.hash(nameProducts);
     }
 
     @Override
     public String toString() {
-        return "Наименование продукта: " + productName +
-                ", стоимость: " + cost +
-                ", вес: " + weight;
+        String checkedString = this.isChecked() ? "Да" : "Нет";
+        return String.format("%s, Цена: %s, Количество: %s, Куплен: %s",
+                this.nameProducts, this.cost, this.weight, checkedString);
     }
 }
